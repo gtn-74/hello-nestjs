@@ -199,3 +199,6 @@ DIには、手動と自動がある様子。
 `@Injectable`のついたServiceをModuleの`providers`に登録するだけで、nestjsが自動DIしてくれる。
 
 ControllerのconstructorでServiceを引数にとる
+
+nestjs CLIは、ほぼマストで利用した方が良さそう。
+モジュール間の紐付けまで自動でやってくれるっぽいから。
