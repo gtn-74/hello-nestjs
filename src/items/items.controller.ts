@@ -9,38 +9,39 @@ import {
   Put,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import * as itemsModel from './items.model';
+// import * as itemsModel from './items.model';
 import { CreateItemDto } from './dto/create-item.dto';
+import * as prisma from 'generated/prisma';
 
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
   // findAllは、こちら側で定義した名前。つまり、findAllじゃなくても良い
-  findAll(): itemsModel.Item[] {
+  findAll(): prisma.Item[] {
     // return 'This is findAll';
     return this.itemsService.findAll();
   }
 
   @Get(':id')
   // ParseUUIDPipeは、バリデーションパイプ
-  findById(@Param('id', ParseUUIDPipe) id: string): itemsModel.Item {
+  findById(@Param('id', ParseUUIDPipe) id: string): prisma.Item {
     return this.itemsService.findById(id);
   }
 
   @Post()
-  create(
+  async create(
+    @Body() createItemDto: CreateItemDto,
     // MEMO:Bodyパラメータでひとつずつ受け取るのはめんどくさい。
     // DTOで一つにまとめることができる
     // @Body('id') id: string,
     // @Body('name') name: string,
     // @Body('price') price: number,
     // @Body('description') description: string,
-    @Body() createItemDto: CreateItemDto,
     // 最初は出品中であるためパラメータに入れておく必要がない
     // @Body('status') status: number,
-  ): itemsModel.Item {
-    // const item: itemsModel.Item = {
+  ): Promise<prisma.Item> {
+    // const item: Item = {
     //   id,
     //   name,
     //   price,
@@ -60,14 +61,14 @@ export class ItemsController {
   // updatePrice(
   //   @Param('id') id: string,
   //   @Body('price') price: number,
-  // ): itemsModel.Item {
+  // ): Item {
   //   return this.itemsService.updatePrice(id, price);
   // }
   @Put('update/:id')
   updatePrice(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() createItemDto: CreateItemDto,
-  ): itemsModel.Item {
+  ): prisma.Item {
     return this.itemsService.updatePrice(id, createItemDto);
   }
 
