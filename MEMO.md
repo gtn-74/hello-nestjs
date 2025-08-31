@@ -219,3 +219,35 @@ export class ItemsController {
 ## modelを作る
 
 ここで作るitemsモデルは、型定義を指す
+
+## DTO(Data Transfer Object)
+
+NestJSのバリデーション機能が使えるようになる
+
+## NestJSでバリデーションを行う
+
+ハンドラーがリクエストを受け取る前にリクエストに対して処理を行う
+`Pipe`を使う
+
+## `class validator`,`class transformer`でdtoにバリデーションを追加する
+
+DTOにclass validatorを書いたときエラーが吐かれた。
+`Unsafe call of a(n) error type typed value.`
+
+再起動したら治った。
+
+サーバー側からのエラーメッセージ何を返したら、フロント側や、後続開発者がわかるかを考える
+
+## 例外処理(Exception:例外)
+
+### BadRequestException
+
+不正リクエスト
+
+### UnauthoizedException
+
+認証失敗
+
+### NotFoundException
+
+リクエストデータが存在しない
