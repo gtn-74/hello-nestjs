@@ -1,5 +1,5 @@
 import { CreateItemDto } from './dto/create-item.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Item } from './items.model';
 import { v4 as uuid } from 'uuid';
 
@@ -14,11 +14,18 @@ export class ItemsService {
 
   findById(id: string): Item {
     // return this.items.find((item) => item.id === id);
-    const items = this.items.find((item) => item.id === id);
-    if (!items) {
-      throw new Error('商品がありません。');
+    // const items = this.items.find((item) => item.id === id);
+    // if (!items) {
+    //   throw new Error('商品がありません。');
+    // }
+    // return items;
+    // 例外
+    const found = this.items.find((item) => item.id === id);
+    if (!found) {
+      // ステータスコード404と、404に応じたメッセージを返却してくれる
+      throw new NotFoundException();
     }
-    return items;
+    return found;
   }
 
   create(CreateItemDto: CreateItemDto): Item {
