@@ -202,3 +202,20 @@ ControllerのconstructorでServiceを引数にとる
 
 nestjs CLIは、ほぼマストで利用した方が良さそう。
 モジュール間の紐付けまで自動でやってくれるっぽいから。
+
+### コンストラクタについて
+
+```typescript
+@Controller('items')
+export class ItemsController {
+  constructor(private readonly itemsService: ItemsService) {}
+  @Get()
+  findAll() {
+    return this.itemsService.findAll();
+  }
+}
+```
+
+## modelを作る
+
+ここで作るitemsモデルは、型定義を指す
