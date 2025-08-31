@@ -10,16 +10,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ItemsService {
   // TODO:コンストラクタってなんやねん
   constructor(private prismaService: PrismaService) {}
-  private items: Item[] = [];
-  findAll(): Item[] {
-    return this.items;
+  // ローカルで確認するためのもの
+  // private items: Item[] = [];
+  async findAll(): Promise<Item[]> {
+    // findManyは複数条件を指定できるメソッド
+    return await this.prismaService.item.findMany();
     // return 'This is itemsService';
   }
   // このサービスメソッドをコントローラから利用するためにDIする必要がある。
 
-  findById(id: string): Item {
+  async findById(id: string): Promise<Item> {
     // 例外
-    const found = this.items.find((item) => item.id === id);
+    const found = await this.prismaService.item.findUnique({
+      where: {
+        id,
+      },
+    });
+    // const found = this.prismaService.item.find((item) => item.id === id);
     if (!found) {
       // ステータスコード404と、404に応じたメッセージを返却してくれる
       throw new NotFoundException();
@@ -54,24 +61,42 @@ export class ItemsService {
     // return item;
   }
 
-  updateStatus(id: string): Item {
-    const item = this.findById(id);
-    item.status = 'SOLD_OUT';
-    return item;
+  async updateStatus(id: string): Promise<Item> {
+    return await this.prismaService.item.update({
+      data: {
+        status: ItemStatus.SOLD_OUT,
+      },
+      where: {
+        id,
+      },
+    });
+    // const item = this.findById(id);
+    // item.status = 'SOLD_OUT';
+    // return item;
     // 受け取ったidと一致したオブジェクトを上書きする方法を考えてた
     // const items = this.items.find((item) => item.id === id);
     // items.map((item))
   }
 
-  updatePrice(id: string, createItemDto: CreateItemDto): Item {
-    const item = this.findById(id);
-    item.price = createItemDto.price;
-    return item;
+  // 同時に処理しないとAPIテストできない?
+  async updatePrice(id: string, createItemDto: CreateItemDto): Promise<Item> {
+    return await this.prismaService.item.update({
+      data: { price: createItemDto.price },
+      where: { id },
+    });
+    // const item = this.findById(id);
+    // item.price = createItemDto.price;
+    // return item;
   }
 
   // 特段返値は無いで良い？
-  delete(id: string) {
-    this.items = this.items.filter((item) => item.id !== id);
+  async delete(id: string) {
+    await this.prismaService.item.delete({
+      where: {
+        id,
+      },
+    });
+    // this.items = this.items.filter((item) => item.id !== id);
     // const item = this.findById(id);
   }
 }

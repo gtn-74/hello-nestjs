@@ -18,15 +18,15 @@ export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
   // findAllは、こちら側で定義した名前。つまり、findAllじゃなくても良い
-  findAll(): prisma.Item[] {
+  async findAll(): Promise<prisma.Item[]> {
     // return 'This is findAll';
-    return this.itemsService.findAll();
+    return await this.itemsService.findAll();
   }
 
   @Get(':id')
   // ParseUUIDPipeは、バリデーションパイプ
-  findById(@Param('id', ParseUUIDPipe) id: string): prisma.Item {
-    return this.itemsService.findById(id);
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<prisma.Item> {
+    return await this.itemsService.findById(id);
   }
 
   @Post()
@@ -53,8 +53,10 @@ export class ItemsController {
   }
 
   @Put(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string) {
-    return this.itemsService.updateStatus(id);
+  async updateStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<prisma.Item> {
+    return await this.itemsService.updateStatus(id);
   }
 
   // @Put(':id/price')
@@ -65,15 +67,15 @@ export class ItemsController {
   //   return this.itemsService.updatePrice(id, price);
   // }
   @Put('update/:id')
-  updatePrice(
+  async updatePrice(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() createItemDto: CreateItemDto,
-  ): prisma.Item {
-    return this.itemsService.updatePrice(id, createItemDto);
+  ): Promise<prisma.Item> {
+    return await this.itemsService.updatePrice(id, createItemDto);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string) {
-    return this.itemsService.delete(id);
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.itemsService.delete(id);
   }
 }
