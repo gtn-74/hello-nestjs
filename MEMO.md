@@ -251,3 +251,13 @@ DTOにclass validatorを書いたときエラーが吐かれた。
 ### NotFoundException
 
 リクエストデータが存在しない
+
+## ORM
+
+prismaを使う
+
+```bash
+npx prisma init
+```
+
+このコマンドは、ルートで良いみたい
