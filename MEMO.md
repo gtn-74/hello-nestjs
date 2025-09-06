@@ -26,6 +26,11 @@ $ nest new プロジェクト名
 $ nest g controller コントローラ名
 ```
 
+```zsh
+// MVCモジュールを一括作成するコマンド
+$ nest g resource リソース名 --no-spec
+```
+
 ## NestJsの基本要素
 
 コア要素
@@ -267,3 +272,17 @@ npx prisma init
 DIを用いてサービスとマイグレーションをコネクトする
 
 利用する側のコンストラクタで利用したいサービスを引数として受け取る必要がある
+
+
+## スキーマに書いたモデルをマイグレーションする
+
+```bash
+npx prisma migrate dev --name addUser
+```
+
+
+## 認証・認可
+
+### 認証（Auth
+
+通信相手が誰であるかを確認する

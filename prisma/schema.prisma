@@ -14,6 +14,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ! 新たに作成したUserとItemを紐づける必要がある。
+
 model Item {
   id          String     @id @default(uuid()) @db.Uuid
   name        String     @db.VarChar(255)
@@ -22,9 +24,28 @@ model Item {
   status      ItemStatus @default(ON_SALE)
   createAt    DateTime   @default(now()) @db.Timestamp(0)
   updateAt    DateTime   @updatedAt() @db.Timestamp(0)
+  userId      String     @db.Uuid
+  // model Userとのリレーション結合が完成 useridが削除されたら、関連するitemも関連して消える
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum ItemStatus {
   ON_SALE
   SOLD_OUT
+}
+
+model User {
+  id       String     @id @default(uuid()) @db.Uuid
+  name     String     @db.VarChar(255)
+  email    String     @unique @db.VarChar(255)
+  password String     @db.VarChar(255)
+  status   UserStatus
+  createAt DateTime   @default(now()) @db.Timestamp(0)
+  updateAt DateTime   @updatedAt() @db.Timestamp(0)
+  item     Item[]
+}
+
+enum UserStatus {
+  FREE
+  PREMIUM
 }
