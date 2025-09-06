@@ -45,6 +45,11 @@ model User {
   item     Item[]
 }
 
+// 再起動したらこのenumじゃなくてもいけた
+// enum UserStatus {
+//   FREE = "FREE",
+//   PREMIUM = "PREMIUM"
+// }
 enum UserStatus {
   FREE
   PREMIUM

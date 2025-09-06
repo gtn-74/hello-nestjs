@@ -9,7 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class ItemsService {
   // TODO:コンストラクタってなんやねん
-  constructor(private prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
   // ローカルで確認するためのもの
   // private items: Item[] = [];
   async findAll(): Promise<Item[]> {
@@ -50,6 +50,7 @@ export class ItemsService {
         price,
         description,
         status: ItemStatus.ON_SALE,
+        userId: '',
       },
     });
     // const item: Item = {
