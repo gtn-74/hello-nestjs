@@ -16,6 +16,7 @@ services:
     hostname: postgres
     restart: always
     user: root
+
   pgadmin4:
     image: dpage/pgadmin4:latest
     ports:
