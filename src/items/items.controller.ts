@@ -7,11 +7,16 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
 // import * as itemsModel from './items.model';
 import { CreateItemDto } from './dto/create-item.dto';
 import * as prisma from 'generated/prisma';
+import { AuthGuard } from '@nestjs/passport';
+import express from 'express';
+import { RequestUser } from 'src/auth/types/requestUser';
 
 @Controller('items')
 export class ItemsController {
@@ -30,8 +35,12 @@ export class ItemsController {
   }
 
   @Post()
+  // !jwt認証
+  // リクエストにjwtがない場合、401で返される
+  @UseGuards(AuthGuard('jwt'))
   async create(
     @Body() createItemDto: CreateItemDto,
+    @Request() req: express.Request & { user: RequestUser },
     // MEMO:Bodyパラメータでひとつずつ受け取るのはめんどくさい。
     // DTOで一つにまとめることができる
     // @Body('id') id: string,
@@ -49,10 +58,11 @@ export class ItemsController {
     //   status: 'ON_SALE',
     // };
     // return this.itemsService.create(item);
-    return this.itemsService.create(createItemDto);
+    return this.itemsService.create(createItemDto, req.user.id);
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async updateStatus(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<prisma.Item> {
@@ -66,6 +76,7 @@ export class ItemsController {
   // ): Item {
   //   return this.itemsService.updatePrice(id, price);
   // }
+  // !あえてガード張らない
   @Put('update/:id')
   async updatePrice(
     @Param('id', ParseUUIDPipe) id: string,
@@ -75,7 +86,11 @@ export class ItemsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.itemsService.delete(id);
+  @UseGuards(AuthGuard('jwt'))
+  async delete(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Request() req: express.Request & { user: RequestUser },
+  ) {
+    return await this.itemsService.delete(id, req.user.id);
   }
 }

@@ -334,11 +334,31 @@ const hashedPassword = await bcrypt.hash(password, 10);
 
 ストラテジーは、基本的に分離されていることが多いらしい。
 
+[jwt.io](https://www.jwt.io/ja)で、jwtデバッグできる。
+業務の際は、デバッグ検証した方が良さそう。
+
+dev環境だったら、ローカルストレージにトークンを仮置きしてその、トークンを持って
+
+
 ## 余談
 
 jsライブラリをTypeScriptで利用する場合、@typesのインストールも必要。jsライブラリは型情報を持っていないため。
 
 ランダムな値を生成できるコマンド
+
 ```zsh
 openssl rand -hex 32
 ```
+
+## やりたいこと
+
+- セッション認証
+- OpenAPIドキュメント作成
+- OpenAPIドキュメント作成
+- レイヤードアーキテクトにリアーキテクト
+- ORM部をMapperに切り出す。
+- ORM部をMapperに切り出す。
+
+## Guardがトークンチェックする
+
+Guard:Nestjsの機能。

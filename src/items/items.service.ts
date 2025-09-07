@@ -41,7 +41,7 @@ export class ItemsService {
   }
 
   // ?RDB操作は非同期処理のため、async,awaitを追加
-  async create(createItemDto: CreateItemDto): Promise<Item> {
+  async create(createItemDto: CreateItemDto, userId: string): Promise<Item> {
     // !RDB接続にあたってロジックを変更
     const { name, price, description } = createItemDto;
     return await this.prismaService.item.create({
@@ -50,7 +50,7 @@ export class ItemsService {
         price,
         description,
         status: ItemStatus.ON_SALE,
-        userId: '',
+        userId,
       },
     });
     // const item: Item = {
@@ -91,10 +91,12 @@ export class ItemsService {
   }
 
   // 特段返値は無いで良い？
-  async delete(id: string) {
+  async delete(id: string, userId: string) {
     await this.prismaService.item.delete({
+      // !下の引数が一致したものだけ削除できる
       where: {
         id,
+        userId,
       },
     });
     // this.items = this.items.filter((item) => item.id !== id);
