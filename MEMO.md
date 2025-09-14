@@ -362,3 +362,6 @@ openssl rand -hex 32
 ## Guardがトークンチェックする
 
 Guard:Nestjsの機能。
+
+
+## CROS
