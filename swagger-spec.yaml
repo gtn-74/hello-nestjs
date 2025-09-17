@@ -1,0 +1,131 @@
+openapi: 3.0.0
+paths:
+  /items:
+    get:
+      operationId: ItemsController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: &ref_0
+        - Items
+    post:
+      operationId: ItemsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateItemDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_0
+  /items/{id}:
+    get:
+      operationId: ItemsController_findById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+    put:
+      operationId: ItemsController_updateStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+    delete:
+      operationId: ItemsController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /items/update/{id}:
+    put:
+      operationId: ItemsController_updatePrice
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateItemDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /auth/signup:
+    post:
+      operationId: AuthController_signUp
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_1
+        - Auth
+  /auth/signin:
+    post:
+      operationId: AuthController_signIn
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialsDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_1
+info:
+  title: 練習WebAPI
+  description: 練習WebAPIの説明欄
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+  schemas:
+    CreateItemDto:
+      type: object
+      properties: {}
+    CreateUserDto:
+      type: object
+      properties: {}
+    CredentialsDto:
+      type: object
+      properties: {}
