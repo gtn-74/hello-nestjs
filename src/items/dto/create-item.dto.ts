@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsInt,
   IsNotEmpty,
@@ -11,6 +12,13 @@ export class CreateItemDto {
   // uuidに置換
   //   id: string;
 
+  @ApiProperty({
+    description: 'アイテム名',
+    example: 'MacBook Pro 14inch',
+    type: 'string', // !重要：型を明示。小文字のstringは、あたい
+    maxLength: 40,
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @MaxLength(40)

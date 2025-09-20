@@ -1,15 +1,33 @@
-openapi: 3.0.0
+openapi: 3.0.4
 paths:
   /items:
     get:
+      deprecated: false
       operationId: ItemsController_findAll
       parameters: []
       responses:
         '200':
-          description: ''
-      tags: &ref_0
-        - Items
+          description: 正常系
+          content:
+            fetch:
+              example:
+                - id: '0000000000000'
+                  name: testProduct1
+                  price: 11111
+                  description: テストディスクリプション
+                  status: ON_SALE
+                  userId: '0000000000000'
+                - id: '0000000000000'
+                  name: testProduct1
+                  price: 11111
+                  description: テストディスクリプション
+                  status: SOLD_OUT
+                  userId: '0000000000000'
+      summary: itemsの一覧の取得
+      tags:
+        - items
     post:
+      deprecated: false
       operationId: ItemsController_create
       parameters: []
       requestBody:
@@ -17,11 +35,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateItemDto'
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: アイテム名
+                  example: MacBook Pro 14inch
+                  maxLength: 40
+                price:
+                  type: number
+                  description: アイテムの価格（円）
+                  example: 298000
+                  minimum: 1
+                description:
+                  type: string
+                  description: アイテムの詳細説明
+                  example: Apple M2 Pro チップ搭載
+                  maxLength: 1000
+                  nullable: true
+              required:
+                - name
+                - price
       responses:
         '201':
-          description: ''
-      tags: *ref_0
+          description: 正常系
+      security:
+        - jwt: []
+      summary: itemsの作成
+      tags:
+        - items
   /items/{id}:
     get:
       operationId: ItemsController_findById
@@ -34,7 +76,9 @@ paths:
       responses:
         '200':
           description: ''
-      tags: *ref_0
+      tags:
+        - Items
+        - items
     put:
       operationId: ItemsController_updateStatus
       parameters:
@@ -46,7 +90,8 @@ paths:
       responses:
         '200':
           description: ''
-      tags: *ref_0
+      tags: &ref_0
+        - Items
     delete:
       operationId: ItemsController_delete
       parameters:
@@ -116,13 +161,21 @@ tags: []
 servers: []
 components:
   securitySchemes:
-    basic:
+    jwt:
+      scheme: bearer
+      bearerFormat: JWT
       type: http
-      scheme: basic
   schemas:
     CreateItemDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: アイテム名
+          example: MacBook Pro 14inch
+          maxLength: 40
+      required:
+        - name
     CreateUserDto:
       type: object
       properties: {}

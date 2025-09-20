@@ -17,11 +17,18 @@ import * as prisma from 'generated/prisma';
 import { AuthGuard } from '@nestjs/passport';
 import express from 'express';
 import { RequestUser } from 'src/auth/types/requestUser';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FindItemAllDetailApiDoc } from 'src/docs/decorators/findItem-all-detail-api-doc';
+import { CreateApiDoc } from 'src/docs/decorators/create-api-docs';
 
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
+
   @Get()
+  // ? 付与しなくてもオートでパスがセットされている様子
+  @ApiTags('items') //! 自分で付与するタイプ
+  @FindItemAllDetailApiDoc()
   // findAllは、こちら側で定義した名前。つまり、findAllじゃなくても良い
   async findAll(): Promise<prisma.Item[]> {
     // return 'This is findAll';
@@ -29,12 +36,15 @@ export class ItemsController {
   }
 
   @Get(':id')
+  @ApiTags('items') //! 自分で付与するタイプ
   // ParseUUIDPipeは、バリデーションパイプ
   async findById(@Param('id', ParseUUIDPipe) id: string): Promise<prisma.Item> {
     return await this.itemsService.findById(id);
   }
 
   @Post()
+  @CreateApiDoc()
+  @ApiBearerAuth('jwt')
   // !jwt認証
   // リクエストにjwtがない場合、401で返される
   @UseGuards(AuthGuard('jwt'))
