@@ -3,6 +3,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CredentialsDto } from './dto/credentials.dto';
+import { SignInApiDoc } from 'src/docs/decorators/auth/signin-api-docs';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,7 @@ export class AuthController {
   }
 
   @Post('signin')
+  @SignInApiDoc()
   async signIn(
     @Body() credentialsDto: CredentialsDto,
   ): Promise<{ token: string }> {

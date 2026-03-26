@@ -42,7 +42,16 @@ async function bootstrap() {
       deepScanRoutes: true,
     });
     fstat.writeFileSync('./src/docs/swagger-spec.yaml', dump(document, {}));
-    SwaggerModule.setup('api/docs/', app, document);
+    SwaggerModule.setup('api/docs/', app, document, {
+      swaggerOptions: {
+        // docExpansion: 'none',
+        // docExpansion: 'list',
+        displayRequestDuration: true,
+        filter: true,
+        tagsSorter: 'alpha',
+        supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
+      },
+    });
   }
   await app.listen(8000);
 }

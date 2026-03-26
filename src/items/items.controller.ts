@@ -18,8 +18,8 @@ import { AuthGuard } from '@nestjs/passport';
 import express from 'express';
 import { RequestUser } from 'src/auth/types/requestUser';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FindItemAllDetailApiDoc } from 'src/docs/decorators/findItem-all-detail-api-doc';
-import { CreateApiDoc } from 'src/docs/decorators/create-api-docs';
+import { FindItemAllDetailApiDoc } from 'src/docs/decorators/items/findItem-all-detail-api-doc';
+import { CreateApiDoc } from 'src/docs/decorators/items/create-api-docs';
 
 @Controller('items')
 export class ItemsController {
